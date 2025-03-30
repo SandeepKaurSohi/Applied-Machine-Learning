@@ -1,0 +1,107 @@
+# Predictive Model for Payment Default Risk
+###Overview
+This code implements a predictive model to predict payment default risk using a logistic regression classifier. It handles missing values, performs feature preprocessing, balances the dataset using SMOTE (Synthetic Minority Over-sampling Technique), and evaluates the model's performance.
+##Code Explanation
+1.	###Importing Libraries: The necessary libraries for data manipulation, model building, and evaluation are imported at the beginning.
+2.	###Data Loading: The dataset is loaded using pandas.read_csv() function. The dataset is assumed to be in tab-separated format (\t).
+
+4.	###Dataset Exploration: The first few rows, data types, and summary statistics of the dataset are displayed to understand its structure and characteristics.
+5.	Missing Value Handling: The code checks for missing values and replaces any '?' values with NaN. Categorical missing values are filled with 'Unknown', and numerical missing values are filled with the median.
+6.	###Data Preprocessing:
+o	### Binary categorical columns are label-encoded (converted to numerical values).
+o	### Categorical features with more than two categories are target encoded (replaced with the mean of the target variable CLASS for each category).
+7.	### Feature and Target Variable Split: The dataset is split into features (X) and target (y), where CLASS is the target variable.
+8.	### SMOTE (Synthetic Minority Over-sampling Technique): To handle class imbalance, SMOTE is applied to generate synthetic samples for the minority class.
+9.	### Train-Test Split: The data is split into training and testing sets with an 80-20 ratio.
+10.	### Feature Scaling: Numerical features are scaled using StandardScaler to ensure that all features have the same scale.
+11.	### Model Training: A logistic regression model is trained on the preprocessed data.
+12.	### Prediction: Predictions are made using a threshold of 0.4 (instead of the default 0.5), which helps to adjust the classification decision boundary.
+13.	### Evaluation: The model's performance is evaluated using a classification report and confusion matrix.
+Outputs
+•	### Classification Report: This includes precision, recall, F1-score, and support for each class.
+•	### Confusion Matrix: Displays the number of true positives, false positives, true negatives, and false negatives.
+
+2. ## Confusion Matrix Data
+Import Libraries
+•	seaborn: A Python data visualization library based on matplotlib. It's used for creating informative and attractive statistical graphics. In this case, it's used to create the heatmap.
+•	matplotlib.pyplot: A plotting library used to generate plots. In this case, it's used to customize the figure (e.g., setting the size) and show the plot.
+conf_matrix = np.array([[5333, 312], [155, 5502]])
+•	np.array: This is a numpy array that represents the confusion matrix.
+•	The confusion matrix is a 2x2 array representing the performance of a classification model:
+o	The first row ([5333, 312]) represents the true negatives and false positives:
+	5333: True Negatives (TN) – correctly predicted "No Default"
+	312: False Positives (FP) – incorrectly predicted as "Default" when it's actually "No Default"
+o	The second row ([155, 5502]) represents the false negatives and true positives:
+	155: False Negatives (FN) – incorrectly predicted as "No Default" when it's actually "Default"
+	5502: True Positives (TP) – correctly predicted "Default"
+3. ## Create a Heatmap
+•	plt.figure(figsize=(6, 5)): This line creates a new figure for the plot with a size of 6x5 inches.
+•	sns.heatmap(): This function creates the heatmap from the confusion matrix (conf_matrix).
+o	annot=True: Annotates each cell of the heatmap with the corresponding value from the confusion matrix (e.g., 5333, 312).
+o	fmt="d": Specifies the format of the annotations as integers (digits).
+o	cmap="Blues": Sets the color map for the heatmap. "Blues" uses varying shades of blue, where darker shades represent higher values.
+o	xticklabels=["No Default", "Default"]: Labels the x-axis (predicted labels) as "No Default" and "Default".
+o	yticklabels=["No Default", "Default"]: Labels the y-axis (true labels) as "No Default" and "Default".
+4. ## Customizing the Plot
+•	plt.xlabel("Predicted Label"): Adds a label for the x-axis, indicating the predicted class labels.
+•	plt.ylabel("True Label"): Adds a label for the y-axis, indicating the true class labels.
+•	plt.title("Confusion Matrix Heatmap"): Adds a title to the heatmap plot, indicating what the plot represents.
+
+Summary: This code generates a heatmap visualization of a confusion matrix, which helps to visually understand the performance of a classification model. The heatmap shows how many predictions were correct and incorrect for each class ("No Default" and "Default"). The intensity of the color indicates the frequency of each value in the confusion matrix, with darker shades representing higher values.
+This code calculates and visualizes the misclassification costs of a classification model using a confusion matrix. 
+1. Importing Libraries
+•	matplotlib.pyplot: Used for creating static visualizations (e.g., bar charts, line plots, etc.).
+•	numpy: A library for numerical operations (e.g., creating arrays, performing arithmetic).
+•	sklearn.metrics.confusion_matrix: This function is typically used to generate a confusion matrix, though it’s not directly needed in this code since the confusion matrix is predefined.
+2. Defining the Confusion Matrix
+•	cm: A numpy array representing the confusion matrix.
+o	The confusion matrix is a 2x2 matrix that represents the classification model's performance:
+	First row (True Negatives and False Positives):
+	5333: True Negatives (TN) – correctly predicted "No Default."
+	312: False Positives (FP) – incorrectly predicted "Default" when the actual label was "No Default."
+	Second row (False Negatives and True Positives):
+	155: False Negatives (FN) – incorrectly predicted "No Default" when the actual label was "Default."
+	5502: True Positives (TP) – correctly predicted "Default."
+3. Calculating Misclassification Costs
+false_positive_cost = cm[0, 1] * 50  # False Positive * 50
+false_negative_cost = cm[1, 0] * 5   # False Negative * 5
+•	Misclassification costs are calculated based on the number of false positives and false negatives:
+o	False Positive Cost: The cost of a false positive is the number of false positives (cm[0, 1] which is 312) multiplied by the cost per false positive, which is 50.
+o	False Negative Cost: The cost of a false negative is the number of false negatives (cm[1, 0] which is 155) multiplied by the cost per false negative, which is 5.
+4. Total Misclassification Cost
+total_cost = false_positive_cost + false_negative_cost
+•	total_cost: This variable stores the total misclassification cost, which is the sum of the false positive and false negative costs.
+5. Plotting the Misclassification Costs
+labels = ['False Positive', 'False Negative']
+cost_values = [false_positive_cost, false_negative_cost]
+
+plt.figure(figsize=(6, 4))
+plt.bar(labels, cost_values, color=['lightcoral', 'lightblue'])
+plt.xlabel('Misclassification Type')
+plt.ylabel('Cost')
+plt.title('Misclassification Cost Breakdown')
+plt.ylim(0, max(cost_values) * 1.1)  # Extend y-axis for better visibility
+•	labels: A list of the two types of misclassifications: "False Positive" and "False Negative."
+•	cost_values: A list containing the misclassification costs calculated earlier for false positives and false negatives.
+•	plt.figure(figsize=(6, 4)): Sets the figure size for the plot (6 inches by 4 inches).
+•	plt.bar(labels, cost_values, color=['lightcoral', 'lightblue']): Creates a bar chart to represent the misclassification costs. The bars are colored light coral for false positives and light blue for false negatives.
+•	plt.xlabel('Misclassification Type'): Adds a label to the x-axis.
+•	plt.ylabel('Cost'): Adds a label to the y-axis.
+•	plt.title('Misclassification Cost Breakdown'): Adds a title to the chart.
+•	plt.ylim(0, max(cost_values) * 1.1): Adjusts the y-axis limits to provide a little extra space above the highest bar for better visibility.
+6. Adding Text Annotations to the Bars
+plt.text(0, false_positive_cost + 500, f'{false_positive_cost:.0f}', ha='center', va='bottom', fontsize=12)
+plt.text(1, false_negative_cost + 500, f'{false_negative_cost:.0f}', ha='center', va='bottom', fontsize=12)
+•	plt.text(): This function adds text annotations above the bars to display the exact misclassification cost values.
+o	The 0 and 1 correspond to the position of the bars (0 for the first bar, "False Positive," and 1 for the second bar, "False Negative").
+o	The +500 adds a vertical offset to position the text above the bars.
+o	f'{false_positive_cost:.0f}' and f'{false_negative_cost:.0f}' format the numbers to display them as integers with no decimal places.
+7. Displaying the Plot
+python
+CopyEdit
+plt.show()
+•	plt.show(): This command displays the plot.
+8. Printing the Total Misclassification Cost
+print(f"Total Misclassification Cost: {total_cost}")
+•	This line prints the total misclassification cost to the console. It combines the false positive and false negative costs to show how much the misclassification has cost based on the provided costs per type.
+
