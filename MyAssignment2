@@ -50,6 +50,7 @@ o	5502: True Positives (TP) – correctly predicted "Default."
 
 Created a Heatmap: This line creates a new figure for the plot with a size of 6x5 inches.
 
+Ceated a Bar chart to Visualize the Classification Report clearly.
 
 Calculated Misclassification Costs: Misclassification costs are calculated based on the number of false positives and false negatives:
 
